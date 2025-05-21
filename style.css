@@ -1,0 +1,13 @@
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: translateX(100%);
+  transition: transform 1s ease-in-out;
+  pointer-events: none;
+}
+
+.slide.active {
+  transform: translateX(0);
+}
