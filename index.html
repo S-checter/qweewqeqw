@@ -2,16 +2,14 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>4 Картинки (разное время)</title>
+  <title>Реклама Рубикон</title>
   <style>
     body {
       margin: 0;
       background-color: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 100vh;
       overflow: hidden;
+      position: relative;
     }
 
     .slide {
@@ -19,7 +17,14 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      display: none;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      z-index: 10;
     }
 
     img {
@@ -39,30 +44,35 @@
   <script>
     const images = [
       { element: document.getElementById('imageSlide1'), duration: 15000 }, // 15 секунд
-      { element: document.getElementById('imageSlide2'), duration: 7000 },  // 5 секунд
-      { element: document.getElementById('imageSlide3'), duration: 7000 },
+      { element: document.getElementById('imageSlide2'), duration: 5000 },  // 5 секунд
+      { element: document.getElementById('imageSlide3'), duration: 5000 },
       { element: document.getElementById('imageSlide4'), duration: 9000 }
     ];
 
     let currentIndex = 0;
 
     function showNextImage() {
-      // Скрываем все картинки
-      images.forEach(img => img.element.style.display = 'none');
+      const current = images[currentIndex].element;
 
-      // Показываем текущую
-      images[currentIndex].element.style.display = 'block';
+      // Скрываем все
+      images.forEach(img => {
+        img.element.classList.remove('active');
+      });
+
+      // Через 50 мс показываем следующую (чтобы успел сработать transition)
+      setTimeout(() => {
+        current.classList.add('active');
+      }, 50);
+
+      currentIndex = (currentIndex + 1) % images.length;
 
       // Переходим к следующей через нужное время
-      setTimeout(() => {
-        currentIndex = (currentIndex + 1) % images.length;
-        showNextImage();
-      }, images[currentIndex].duration);
+      setTimeout(showNextImage, images[(currentIndex + 3) % 4].duration);
     }
 
     // Начинаем с первой картинки
-    showNextImage();
-  </script>
-
-</body>
-</html>
+    window.addEventListener('load', () => {
+      images[0].element.classList.add('active');
+      setTimeout(showNextImage, images[0].duration);
+    });
+  </script
