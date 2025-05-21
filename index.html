@@ -12,7 +12,6 @@
       align-items: center;
       height: 100vh;
       overflow: hidden;
-      position: relative;
     }
 
     .slide {
@@ -21,75 +20,55 @@
       height: 100%;
       object-fit: contain;
       display: none;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
     }
 
-    .slide.active {
-      opacity: 1;
-      z-index: 10;
-      display: block;
+    img {
+      width: 100%;
+      height: auto;
     }
   </style>
 </head>
 <body>
 
   <!-- Картинки -->
-  <img class="slide" src="image.png" alt="Картинка 1" data-duration="15000">
-  <img class="slide" src="1m.png" alt="Картинка 2" data-duration="5000">
-  <img class="slide" src="1m1.png" alt="Картинка 3" data-duration="5000">
-  <img class="slide" src="1m2.png" alt="Картинка 4" data-duration="9000">
-  <img class="slide" src="111.png" alt="Картинка 5" data-duration="3000">
+  <img id="imageSlide1" class="slide" src="image.png" alt="Картинка 1">
+  <img id="imageSlide2" class="slide" src="1m.png" alt="Картинка 2">
+  <img id="imageSlide3" class="slide" src="1m1.png" alt="Картинка 3">
+  <img id="imageSlide4" class="slide" src="1m2.png" alt="Картинка 4">
+  <img id="imageSlide5" class="slide" src="111.png" alt="Картинка 5">
 
   <script>
-    let currentIndex = 0;
-    let images = [];
+    const images = [
+      { element: document.getElementById('imageSlide1'), duration: 15000 }, // 15 секунд
+      { element: document.getElementById('imageSlide2'), duration: 5000 },  // 5 секунд
+      { element: document.getElementById('imageSlide3'), duration: 5000 },
+      { element: document.getElementById('imageSlide4'), duration: 9000 },
+      { element: document.getElementById('imageSlide5'), duration: 3000 }
+    ];
 
-    // Загружаем все изображения и их длительность
-    function loadImages() {
-      images = Array.from(document.querySelectorAll('.slide')).map(el => {
-        const duration = parseInt(el.getAttribute('data-duration')) || 5000;
-        el.classList.remove('active');
-        el.style.display = 'none';
-        return { element: el, duration };
-      });
-    }
+    let currentIndex = 0;
 
     function showNextImage() {
-      if (images.length === 0) return;
+      // Скрываем все картинки
+      images.forEach(img => img.element.style.display = 'none');
 
-      // Скрываем текущую
-      images.forEach(img => img.element.classList.remove('active'));
-
-      // Показываем следующую
-      currentIndex = (currentIndex + 1) % images.length;
-      images[currentIndex].element.classList.add('active');
+      // Показываем текущую
+      images[currentIndex].element.style.display = 'block';
 
       // Переходим к следующей через нужное время
-      setTimeout(showNextImage, images[currentIndex].duration);
-    }
-
-    // Инициализация
-    function initSlider() {
-      loadImages();
-      if (images.length > 0) {
-        images[0].element.classList.add('active');
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % images.length;
         showNextImage();
-      }
+      }, images[currentIndex].duration);
     }
 
-    // Автоповторная загрузка страницы (например, каждые 5 минут)
-    function startAutoRefresh(interval = 300000) {
-      setInterval(() => {
-        location.reload(); // перезагружаем страницу
-      }, interval);
-    }
+    // Начинаем с первой картинки
+    showNextImage();
 
-    // Запуск
-    window.addEventListener('load', () => {
-      initSlider();
-      startAutoRefresh(300000); // обновление каждые 5 минут (300000 мс)
-    });
+    // 🔁 Автоматическое обновление страницы каждые 5 минут
+    setInterval(() => {
+      location.reload(); // Перезагружаем страницу
+    }, 300000); // 300000 мс = 5 минут
   </script>
 
 </body>
