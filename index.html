@@ -7,9 +7,11 @@
     body {
       margin: 0;
       background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
       overflow: hidden;
-      position: relative;
     }
 
     .slide {
@@ -17,14 +19,7 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-      pointer-events: none;
-    }
-
-    .slide.active {
-      opacity: 1;
-      z-index: 10;
+      display: none;
     }
 
     img {
@@ -52,27 +47,22 @@
     let currentIndex = 0;
 
     function showNextImage() {
-      const current = images[currentIndex].element;
+      // Скрываем все картинки
+      images.forEach(img => img.element.style.display = 'none');
 
-      // Скрываем все
-      images.forEach(img => {
-        img.element.classList.remove('active');
-      });
-
-      // Через 50 мс показываем следующую (чтобы успел сработать transition)
-      setTimeout(() => {
-        current.classList.add('active');
-      }, 50);
-
-      currentIndex = (currentIndex + 1) % images.length;
+      // Показываем текущую
+      images[currentIndex].element.style.display = 'block';
 
       // Переходим к следующей через нужное время
-      setTimeout(showNextImage, images[(currentIndex + 3) % 4].duration);
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % images.length;
+        showNextImage();
+      }, images[currentIndex].duration);
     }
 
     // Начинаем с первой картинки
-    window.addEventListener('load', () => {
-      images[0].element.classList.add('active');
-      setTimeout(showNextImage, images[0].duration);
-    });
-  </script
+    showNextImage();
+  </script>
+
+</body>
+</html>
