@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>Картинка → Видео → Цикл</title>
+  <meta charset="UTF-8">
+  <title>Картинка → Видео</title>
   <style>
     body {
       margin: 0;
@@ -27,81 +27,44 @@
       height: auto;
     }
 
-    iframe {
+    video {
       width: 100%;
-      height: 100%;
-      border: none;
+      height: auto;
     }
   </style>
 </head>
 <body>
 
   <!-- Картинка -->
-  <img id="imageSlide" class="slide" src="https://drive.google.com/uc?export=download&id=15mJngFje7yZ_2slkKwXd1WYCAP0mDwRG " alt="Логотип" />
+  <img id="imageSlide" class="slide" src="https://yourusername.github.io/image.jpg " alt="Логотип">
 
-  <!-- Видео с Vimeo -->
-  <div id="videoWrapper" class="slide" style="position:relative;padding-top:75%;">
-    <iframe id="vimeoIframe"
-            src=""
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-            style="position:absolute;top:0;left:0;width:100%;height:100%;"
-            title="Видео">
-    </iframe>
-  </div>
-
-  <!-- Подключение API Vimeo Player -->
-  <script src="https://player.vimeo.com/api/player.js "></script>
+  <!-- Видео -->
+  <video id="videoSlide" class="slide" muted controlsList="nodownload" oncontextmenu="return false;"></video>
 
   <script>
     const image = document.getElementById('imageSlide');
-    const videoWrapper = document.getElementById('videoWrapper');
-    const iframe = document.getElementById('vimeoIframe');
+    const video = document.getElementById('videoSlide');
 
-    // 🔁 Замени VIDEO_ID на свой из Vimeo
-    const vimeoVideoId = '1086279681';
-    const vimeoUrl = `https://player.vimeo.com/video/ ${vimeoVideoId}?h=abcd123456&autoplay=1&loop=1&muted=1`;
-
-    let player;
+    // Замени эти ссылки на настоящие!
+    const imageUrl = 'https://s-checter.github.io/image%20(8).png ';
+    const videoUrl = 'https://s-checter.github.io/video5289603205456496170.mp4 ';
 
     function showImage() {
-      videoWrapper.style.display = 'none';
+      video.style.display = 'none';
       image.style.display = 'block';
 
       setTimeout(() => {
         image.style.display = 'none';
-        iframe.src = vimeoUrl;
-        videoWrapper.style.display = 'block';
-
-        // Создаем объект Vimeo.Player только после загрузки iframe
-        if (!player) {
-          player = new Vimeo.Player(iframe);
-        }
-
-        // Начинаем воспроизведение
-        player.play();
-      }, 15000); // показываем картинку 15 секунд
+        video.src = videoUrl;
+        video.play();
+        video.style.display = 'block';
+      }, 30000); // Показываем картинку 15 секунд
     }
 
-    // Слушаем событие завершения видео
-    if (window.Vimeo && window.Vimeo.Player) {
-      iframe.addEventListener('load', () => {
-        player = new Vimeo.Player(iframe);
-        player.on('ended', () => {
-          iframe.src = ''; // очищаем, чтобы можно было заново запустить
-          videoWrapper.style.display = 'none';
-          showImage();
-        });
-      });
-    } else {
-      window.addEventListener('load', () => {
-        player = new Vimeo.Player(iframe);
-        player.on('ended', () => {
-          iframe.src = ''; // очищаем, чтобы можно было заново запустить
-          videoWrapper.style.display = 'none';
-          showImage();
-        });
-      });
-    }
+    video.addEventListener('ended', () => {
+      video.style.display = 'none';
+      showImage();
+    });
 
     // Стартуем с картинки
     showImage();
