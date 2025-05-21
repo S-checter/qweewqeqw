@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Картинка → Видео</title>
   <style>
     body {
@@ -39,7 +39,7 @@
   <img id="imageSlide" class="slide" src="image.png" alt="Логотип">
 
   <!-- Видео -->
-  <video id="videoSlide" class="slide" muted controlsList="nodownload" oncontextmenu="return false;"></video>
+  <video id="videoSlide" class="slide" muted playsinline></video>
 
   <script>
     const image = document.getElementById('imageSlide');
@@ -57,7 +57,7 @@
         video.src = videoUrl;
         video.play();
         video.style.display = 'block';
-      }, 30000); // Показываем картинку 15 секунд
+      }, 15000);
     }
 
     video.addEventListener('ended', () => {
@@ -65,8 +65,10 @@
       showImage();
     });
 
-    // Стартуем с картинки
-    showImage();
+    // Автовоспроизведение после загрузки
+    window.addEventListener('load', () => {
+      showImage();
+    });
   </script>
 
 </body>
