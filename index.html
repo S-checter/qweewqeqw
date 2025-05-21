@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Картинка → Картинка</title>
+  <title>4 Картинки (разное время)</title>
   <style>
     body {
       margin: 0;
@@ -30,37 +30,38 @@
 </head>
 <body>
 
-  <!-- Первая картинка -->
+  <!-- Картинки -->
   <img id="imageSlide1" class="slide" src="image.png" alt="Картинка 1">
-
-  <!-- Вторая картинка -->
   <img id="imageSlide2" class="slide" src="1m.png" alt="Картинка 2">
-
-    <!-- Вторая картинка -->
   <img id="imageSlide3" class="slide" src="1m1.png" alt="Картинка 3">
-
-    <!-- Вторая картинка -->
   <img id="imageSlide4" class="slide" src="1m2.png" alt="Картинка 4">
 
   <script>
-    const image1 = document.getElementById('imageSlide1');
-    const image2 = document.getElementById('imageSlide2');
-    const image3 = document.getElementById('imageSlide3');
-    const image4 = document.getElementById('imageSlide4');
+    const images = [
+      { element: document.getElementById('imageSlide1'), duration: 15000 }, // 15 секунд
+      { element: document.getElementById('imageSlide2'), duration: 5000 },  // 5 секунд
+      { element: document.getElementById('imageSlide3'), duration: 5000 },
+      { element: document.getElementById('imageSlide4'), duration: 5000 }
+    ];
 
-    function showImage1() {
-      image2.style.display = 'none';
-      image1.style.display = 'block';
+    let currentIndex = 0;
 
+    function showNextImage() {
+      // Скрываем все картинки
+      images.forEach(img => img.element.style.display = 'none');
+
+      // Показываем текущую
+      images[currentIndex].element.style.display = 'block';
+
+      // Переходим к следующей через нужное время
       setTimeout(() => {
-        image1.style.display = 'none';
-        image2.style.display = 'block';
-        setTimeout(showImage1, 5000); // показываем картинку 2 → потом снова 1
-      }, 15000); // показываем картинку 1 → затем переключаемся
+        currentIndex = (currentIndex + 1) % images.length;
+        showNextImage();
+      }, images[currentIndex].duration);
     }
 
     // Начинаем с первой картинки
-    showImage1();
+    showNextImage();
   </script>
 
 </body>
