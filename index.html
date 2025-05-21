@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>1.2</title>
+  <title>1.3</title>
   <style>
     body {
       margin: 0;
@@ -12,6 +12,7 @@
       align-items: center;
       height: 100vh;
       overflow: hidden;
+      position: relative;
     }
 
     .slide {
@@ -27,63 +28,99 @@
       height: auto;
     }
 
-    video {
+    .iframe-wrapper {
       width: 100%;
-      height: auto;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
   </style>
 </head>
 <body>
 
   <!-- Картинка -->
-  <img id="imageSlide" class="slide" src="image.png" alt="Логотип">
+  <img id="imageSlide" class="slide" src="image.jpg" alt="Логотип">
 
-  <!-- Видео -->
-  <video id="videoSlide" class="slide" muted playsinline></video>
-
-  <!-- Предварительная загрузка видео -->
-  <div style="display:none;">
-    <video id="preloader" preload="auto" muted></video>
+  <!-- Видео через iframe -->
+  <div id="videoSlide" class="iframe-wrapper">
+    <iframe id="vkVideo"
+            src=""
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen>
+    </iframe>
   </div>
 
   <script>
     const image = document.getElementById('imageSlide');
-    const video = document.getElementById('videoSlide');
-    const preloader = document.getElementById('preloader');
+    const videoWrapper = document.getElementById('videoSlide');
+    const iframe = document.getElementById('vkVideo');
 
-    const imageUrl = 'image.png';
-    const videoUrl = 'video5289603205456496170.mp4';
+    // Прямые ссылки
+    const imageUrl = 'image.jpg';
+    const videoUrl = 'https://vkvideo.ru/video_ext.php?oid=66807882&id=456239179&hd=2&autoplay=1 ';
 
     function showImage() {
-      video.style.display = 'none';
+      videoWrapper.style.display = 'none';
       image.style.display = 'block';
 
       setTimeout(() => {
         image.style.display = 'none';
-        video.src = videoUrl;
-        video.play();
-        video.style.display = 'block';
+        iframe.src = videoUrl;
+        videoWrapper.style.display = 'flex';
       }, 15000); // показываем картинку 15 секунд
     }
 
-    video.addEventListener('ended', () => {
-      video.style.display = 'none';
-      showImage();
+    // Чтобы обнаружить окончание видео — используем setInterval
+    function startPollingForEnd() {
+      const checkIframe = () => {
+        try {
+          if (!iframe.contentWindow) return;
+
+          iframe.contentWindow.postMessage(
+            JSON.stringify({
+              method: 'isPaused'
+            }),
+            '*'
+          );
+        } catch (e) {
+          console.warn('Ошибка доступа к iframe');
+        }
+      };
+
+      setInterval(checkIframe, 2000);
+    }
+
+    // Обработка завершения видео (примерная)
+    window.addEventListener('message', function(event) {
+      try {
+        const data = JSON.parse(event.data);
+
+        // Если видео остановлено/закончилось — перезапускаем цикл
+        if (data && data.isPaused === true) {
+          iframe.src = '';
+          videoWrapper.style.display = 'none';
+          showImage();
+        }
+      } catch (e) {
+        // Не все сообщения — от видео
+      }
     });
 
-    // Загружаем видео сразу при открытии страницы
-    window.addEventListener('load', () => {
-      preloader.src = videoUrl;
-      preloader.load();
-      preloader.play().catch(() => {
-        // Игнорируем ошибки автовоспроизведения
-      });
+    // Начинаем с картинки
+    showImage();
 
-      // После первой загрузки начинаем цикл
-      setTimeout(() => {
-        showImage();
-      }, 1000); // запуск после частичной буферизации
-    });
+    // Можно добавить polling для отслеживания конца видео
+    // startPollingForEnd();
   </script>
 
 </body>
