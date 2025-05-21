@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Рубик</title>
+  <title>Реклама Рубикон</title>
   <style>
     body {
       margin: 0;
@@ -36,42 +36,47 @@
   <img id="imageSlide3" class="slide" src="1m1.png" alt="Картинка 3">
   <img id="imageSlide4" class="slide" src="1m2.png" alt="Картинка 4">
   <img id="imageSlide5" class="slide" src="111.png" alt="Картинка 5">
-  <img id="imageSlide6" class="slide" src="ff.png" alt="Картинка 6">
-  
 
   <script>
-    const images = [
-      { element: document.getElementById('imageSlide1'), duration: 15000 }, // 15 секунд
-      { element: document.getElementById('imageSlide2'), duration: 5000 },  // 5 секунд
-      { element: document.getElementById('imageSlide3'), duration: 5000 },
-      { element: document.getElementById('imageSlide4'), duration: 9000 },
-      { element: document.getElementById('imageSlide5'), duration: 3000 },
-      { element: document.getElementById('imageSlide6'), duration: 7000 }
-    ];
-
+    let images = [];
     let currentIndex = 0;
 
-    function showNextImage() {
-      // Скрываем все картинки
-      images.forEach(img => img.element.style.display = 'none');
+    function initSlider() {
+      images = [
+        { element: document.getElementById('imageSlide1'), duration: 15000 },
+        { element: document.getElementById('imageSlide2'), duration: 5000 },
+        { element: document.getElementById('imageSlide3'), duration: 5000 },
+        { element: document.getElementById('imageSlide4'), duration: 9000 },
+        { element: document.getElementById('imageSlide5'), duration: 3000 }
+      ];
 
-      // Показываем текущую
-      images[currentIndex].element.style.display = 'block';
+      // Проверяем, все ли элементы найдены
+      if (images.some(img => !img.element)) {
+        console.error("Не все картинки загружены");
+        return;
+      }
 
-      // Переходим к следующей через нужное время
-      setTimeout(() => {
+      function showNextImage() {
+        images.forEach(img => img.element.style.display = 'none');
+        images[currentIndex].element.style.display = 'block';
+
         currentIndex = (currentIndex + 1) % images.length;
-        showNextImage();
-      }, images[currentIndex].duration);
+
+        setTimeout(showNextImage, images[(currentIndex - 1 + images.length) % images.length].duration);
+      }
+
+      showNextImage();
     }
 
-    // Начинаем с первой картинки
-    showNextImage();
+    // Запуск слайдера после полной загрузки страницы
+    window.addEventListener('load', () => {
+      initSlider();
+    });
 
     // 🔁 Автоматическое обновление страницы каждые 5 минут
     setInterval(() => {
-      location.reload(); // Перезагружаем страницу
-    }, 150000); // 300000 мс = 5 минут
+      location.reload();
+    }, 300000); // 5 минут
   </script>
 
 </body>
