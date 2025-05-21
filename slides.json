@@ -1,0 +1,5 @@
+[
+  { "src": "image.png", "duration": 15000 },
+  { "src": "1m.png", "duration": 5000 },
+  { "src": "new-image.png", "duration": 9000 }
+]
