@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Онлайн Ролик</title>
+  <title>Видео с картинкой 15 секунд</title>
   <style>
     body {
       margin: 0;
@@ -12,17 +12,71 @@
       align-items: center;
       height: 100vh;
     }
-    video {
+
+    .video-container {
+      position: relative;
       width: 100%;
       max-width: 100%;
+    }
+
+    video {
+      width: 100%;
       height: auto;
+      display: block;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 120px; /* размер логотипа */
+      z-index: 10;
+      transition: opacity 0.5s ease-out;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <video controls autoplay muted>
-    <source src="https://drive.google.com/uc?export=download&id=13SZcA9GwxC7N9G1cjp8xDNLqdb5RYv1Q" type="video/mp4">
+
+<div class="video-container">
+  <img id="overlay" src="https://drive.google.com/uc?export=download&id=15mJngFje7yZ_2slkKwXd1WYCAP0mDwRG " class="overlay" alt="Логотип">
+  <video id="myVideo" autoplay muted>
+    <source src="https://drive.google.com/uc?export=download&id=13SZcA9GwxC7N9G1cjp8xDNLqdb5RYv1Q " type="video/mp4">
     Ваш браузер не поддерживает воспроизведение видео.
   </video>
+</div>
+
+<script>
+  const overlay = document.getElementById('overlay');
+  const video = document.getElementById('myVideo');
+
+  function resetOverlay() {
+    overlay.classList.remove('hidden');
+    setTimeout(() => {
+      overlay.classList.add('hidden');
+    }, 15000); // Скрыть через 15 секунд
+  }
+
+  // Показать картинку при начале воспроизведения
+  video.addEventListener('play', () => {
+    resetOverlay();
+  });
+
+  // Перезапускать видео после окончания
+  video.addEventListener('ended', () => {
+    video.currentTime = 0;
+    video.play();
+    resetOverlay(); // снова показываем картинку
+  });
+
+  // На случай, если видео перезапустили вручную
+  video.addEventListener('loadedmetadata', () => {
+    resetOverlay();
+  });
+</script>
+
 </body>
 </html>
