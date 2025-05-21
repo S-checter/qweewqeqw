@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>1.1</title>
+  <title>Картинка → Видео → Цикл</title>
   <style>
     body {
       margin: 0;
@@ -41,9 +41,15 @@
   <!-- Видео -->
   <video id="videoSlide" class="slide" muted playsinline></video>
 
+  <!-- Предварительная загрузка видео -->
+  <div style="display:none;">
+    <video id="preloader" preload="auto" muted></video>
+  </div>
+
   <script>
     const image = document.getElementById('imageSlide');
     const video = document.getElementById('videoSlide');
+    const preloader = document.getElementById('preloader');
 
     const imageUrl = 'image.png';
     const videoUrl = 'video5289603205456496170.mp4';
@@ -57,7 +63,7 @@
         video.src = videoUrl;
         video.play();
         video.style.display = 'block';
-      }, 15000);
+      }, 15000); // показываем картинку 15 секунд
     }
 
     video.addEventListener('ended', () => {
@@ -65,9 +71,18 @@
       showImage();
     });
 
-    // Автовоспроизведение после загрузки
+    // Загружаем видео сразу при открытии страницы
     window.addEventListener('load', () => {
-      showImage();
+      preloader.src = videoUrl;
+      preloader.load();
+      preloader.play().catch(() => {
+        // Игнорируем ошибки автовоспроизведения
+      });
+
+      // После первой загрузки начинаем цикл
+      setTimeout(() => {
+        showImage();
+      }, 1000); // запуск после частичной буферизации
     });
   </script>
 
