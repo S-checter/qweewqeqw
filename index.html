@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>азазазаа</title>
+  <title>Реклама Рубикон</title>
   <style>
     body {
       margin: 0;
@@ -36,7 +36,6 @@
   <img id="imageSlide3" class="slide" src="1m1.png" alt="Картинка 3">
   <img id="imageSlide4" class="slide" src="1m2.png" alt="Картинка 4">
   <img id="imageSlide5" class="slide" src="111.png" alt="Картинка 5">
-  <img id="imageSlide5" class="slide" src="ff.png" alt="Картинка 6">
 
   <script>
     let images = [];
@@ -48,37 +47,45 @@
         { element: document.getElementById('imageSlide2'), duration: 5000 },
         { element: document.getElementById('imageSlide3'), duration: 5000 },
         { element: document.getElementById('imageSlide4'), duration: 9000 },
-        { element: document.getElementById('imageSlide5'), duration: 3000 },
-        { element: document.getElementById('imageSlide6'), duration: 7000 }
+        { element: document.getElementById('imageSlide5'), duration: 3000 }
       ];
 
       // Проверяем, все ли элементы найдены
       if (images.some(img => !img.element)) {
-        console.error("Не все картинки загружены");
+        console.warn("Не все элементы загружены. Повтор попытки через 1 секунду...");
+        setTimeout(initSlider, 1000); // пробуем снова
         return;
       }
 
-      function showNextImage() {
-        images.forEach(img => img.element.style.display = 'none');
-        images[currentIndex].element.style.display = 'block';
-
-        currentIndex = (currentIndex + 1) % images.length;
-
-        setTimeout(showNextImage, images[(currentIndex - 1 + images.length) % images.length].duration);
-      }
-
+      // Начинаем показ
       showNextImage();
     }
 
-    // Запуск слайдера после полной загрузки страницы
+    function showNextImage() {
+      images.forEach(img => {
+        if (img.element) img.element.style.display = 'none';
+      });
+
+      const current = images[currentIndex];
+      if (!current || !current.element) return;
+
+      current.element.style.display = 'block';
+
+      currentIndex = (currentIndex + 1) % images.length;
+
+      setTimeout(showNextImage, current.duration);
+    }
+
+    // Запуск после полной загрузки страницы
     window.addEventListener('load', () => {
+      console.log("Страница загружена");
       initSlider();
     });
 
-    // 🔁 Автоматическое обновление страницы каждые 5 минут
+    // Автообновление каждые 5 минут
     setInterval(() => {
       location.reload();
-    }, 150000); // 5 минут
+    }, 300000); // 5 минут
   </script>
 
 </body>
