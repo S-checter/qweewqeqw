@@ -3,30 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <title>Реклама Рубикон</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+<style>
+  body {
+    margin: 0;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-    .slide {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: none;
-    }
+  .slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    pointer-events: none;
+  }
 
-    img {
-      width: 100%;
-      height: auto;
-    }
-  </style>
+  .slide.visible {
+    opacity: 1;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+</style>
 </head>
 <body>
 
@@ -38,57 +44,62 @@
   
   <img id="imageSlide5" class="slide" src="ff.png" alt="Картинка 5">
 
-  <script>
-    let images = [];
-    let currentIndex = 0;
+<script>
+  let images = [];
+  let currentIndex = 0;
 
-    function initSlider() {
-      images = [
-        { element: document.getElementById('imageSlide1'), duration: 15000 },
-        { element: document.getElementById('imageSlide2'), duration: 5000 },
-        { element: document.getElementById('imageSlide3'), duration: 5000 },
-        { element: document.getElementById('imageSlide4'), duration: 9000 },
-        
-        { element: document.getElementById('imageSlide5'), duration: 7000 }
-      ];
+  function initSlider() {
+    images = [
+      { element: document.getElementById('imageSlide1'), duration: 15000 },
+      { element: document.getElementById('imageSlide2'), duration: 5000 },
+      { element: document.getElementById('imageSlide3'), duration: 5000 },
+      { element: document.getElementById('imageSlide4'), duration: 9000 },
+      { element: document.getElementById('imageSlide5'), duration: 7000 }
+    ];
 
-      // Проверяем, все ли элементы найдены
-      if (images.some(img => !img.element)) {
-        console.warn("Не все элементы загружены. Повтор попытки через 1 секунду...");
-        setTimeout(initSlider, 1000); // пробуем снова
-        return;
-      }
-
-      // Начинаем показ
-      showNextImage();
+    // Проверяем, все ли элементы найдены
+    if (images.some(img => !img.element)) {
+      console.warn("Не все элементы загружены. Повтор попытки через 1 секунду...");
+      setTimeout(initSlider, 1000); // пробуем снова
+      return;
     }
 
-    function showNextImage() {
-      images.forEach(img => {
-        if (img.element) img.element.style.display = 'none';
-      });
+    // Начинаем показ
+    showNextImage();
+  }
 
+  function showNextImage() {
+    // Скрываем все изображения
+    images.forEach(img => {
+      if (img.element) img.element.classList.remove('visible');
+    });
+
+    // Через небольшую задержку, чтобы анимация скрытия проигралась
+    setTimeout(() => {
       const current = images[currentIndex];
       if (!current || !current.element) return;
 
-      current.element.style.display = 'block';
+      // Показываем текущее изображение
+      current.element.classList.add('visible');
 
       currentIndex = (currentIndex + 1) % images.length;
 
+      // Переходим к следующему кадру
       setTimeout(showNextImage, current.duration);
-    }
+    }, 1000); // задержка = времени анимации (transition: 1s)
+  }
 
-    // Запуск после полной загрузки страницы
-    window.addEventListener('load', () => {
-      console.log("Страница загружена");
-      initSlider();
-    });
+  // Запуск после полной загрузки страницы
+  window.addEventListener('load', () => {
+    console.log("Страница загружена");
+    initSlider();
+  });
 
-    // Автообновление каждые 5 минут
-    setInterval(() => {
-      location.reload();
-    }, 150000); // 5 минут
-  </script>
+  // Автообновление каждые 5 минут
+  setInterval(() => {
+    location.reload();
+  }, 300000); // 5 минут
+</script>
 
 </body>
 </html>
