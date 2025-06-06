@@ -28,20 +28,21 @@
       opacity: 1;
     }
 
-    img, video {
+    img,
+    video {
       width: 100%;
       height: auto;
     }
   </style>
 </head>
 <body>
-  
-  <!-- Видео -->
+
+  <!-- Видео (первый слайд) -->
   <video id="videoSlide" class="slide" muted loop preload="auto">
     <source src="video5289603205456496170.mp4" type="video/mp4">
     Ваш браузер не поддерживает видео.
   </video>
-  
+
   <!-- Картинки -->
   <img id="imageSlide1" class="slide" src="image.png" alt="Картинка 1">
   <img id="imageSlide2" class="slide" src="1m.jpg" alt="Картинка 2">
@@ -54,20 +55,16 @@
   <img id="imageSlide9" class="slide" src="ddcar3.PNG" alt="Картинка 9">
   <img id="imageSlide10" class="slide" src="ddcar4.PNG" alt="Картинка 10">
 
-
-
 <script>
   let images = [];
   let currentIndex = 0;
 
   function initSlider() {
-        // Проверяем, все ли элементы найдены
-    if (images.some(img => !img.element)) {
-      console.warn("Не все элементы загружены. Повтор попытки через 1 секунду...");
-      setTimeout(initSlider, 1000);
-      return;
-      
     images = [
+      // Первым элементом — видео
+      { element: document.getElementById('videoSlide'), duration: 40000 }, // например, 12 секунд
+
+      // Затем картинки
       { element: document.getElementById('imageSlide1'), duration: 9000 },
       { element: document.getElementById('imageSlide2'), duration: 6000 },
       { element: document.getElementById('imageSlide3'), duration: 6000 },
@@ -78,9 +75,13 @@
       { element: document.getElementById('imageSlide8'), duration: 6000 },
       { element: document.getElementById('imageSlide9'), duration: 6000 },
       { element: document.getElementById('imageSlide10'), duration: 10000 },
-      // Добавляем видео как отдельный слайд:
-      { element: document.getElementById('videoSlide'), duration: 12000 }, // например, 12 секунд
     ];
+
+    // Проверяем, все ли элементы найдены
+    if (images.some(img => !img.element)) {
+      console.warn("Не все элементы загружены. Повтор попытки через 1 секунду...");
+      setTimeout(initSlider, 1000);
+      return;
     }
 
     // Начинаем показ
@@ -96,29 +97,29 @@
       }
     });
 
-    // Через небольшую задержку, чтобы анимация скрытия проигралась
     setTimeout(() => {
       const current = images[currentIndex];
       if (!current || !current.element) return;
 
-      // Показываем текущее изображение или запускаем видео
+      // Показываем текущий слайд
       current.element.classList.add('visible');
 
+      // Если это видео — проигрываем его
       if (current.element.tagName === 'VIDEO') {
         current.element.currentTime = 0;
         const playPromise = current.element.play();
+
         if (playPromise !== undefined) {
           playPromise.catch(error => {
-            console.warn("Автовоспроизведение видео заблокировано", error);
+            console.warn("Автовоспроизведение заблокировано", error);
           });
         }
       }
 
       currentIndex = (currentIndex + 1) % images.length;
 
-      // Переходим к следующему кадру
       setTimeout(showNextImage, current.duration);
-    }, 1000); // задержка = времени анимации (transition: 1s)
+    }, 1000); // задержка анимации
   }
 
   // Запуск после полной загрузки страницы
