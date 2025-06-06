@@ -3,36 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <title>Реклама Рубикон</title>
-<style>
-  body {
-    margin: 0;
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-  }
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-  .slide {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-    pointer-events: none;
-  }
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      pointer-events: none;
+    }
 
-  .slide.visible {
-    opacity: 1;
-  }
+    .slide.visible {
+      opacity: 1;
+    }
 
-  img {
-    width: 100%;
-    height: auto;
-  }
-</style>
+    img, video {
+      width: 100%;
+      height: auto;
+    }
+  </style>
 </head>
 <body>
 
@@ -47,7 +47,12 @@
   <img id="imageSlide8" class="slide" src="ddcar2.PNG" alt="Картинка 8">
   <img id="imageSlide9" class="slide" src="ddcar3.PNG" alt="Картинка 9">
   <img id="imageSlide10" class="slide" src="ddcar4.PNG" alt="Картинка 10">
-  
+
+  <!-- Видео -->
+  <video id="videoSlide" class="slide" muted loop preload="auto">
+    <source src="video5289603205456496170.mp4" type="video/mp4">
+    Ваш браузер не поддерживает видео.
+  </video>
 
 <script>
   let images = [];
@@ -65,17 +70,14 @@
       { element: document.getElementById('imageSlide8'), duration: 6000 },
       { element: document.getElementById('imageSlide9'), duration: 6000 },
       { element: document.getElementById('imageSlide10'), duration: 10000 },
-      // { element: document.getElementById('imageSlide11'), duration: 6000 },
-      // { element: document.getElementById('imageSlide12'), duration: 6000 },
-      // { element: document.getElementById('imageSlide13'), duration: 6000 },
-      // { element: document.getElementById('imageSlide14'), duration: 6000 },
-      
+      // Добавляем видео как отдельный слайд:
+      { element: document.getElementById('videoSlide'), duration: 12000 }, // например, 12 секунд
     ];
 
     // Проверяем, все ли элементы найдены
     if (images.some(img => !img.element)) {
       console.warn("Не все элементы загружены. Повтор попытки через 1 секунду...");
-      setTimeout(initSlider, 1000); // пробуем снова
+      setTimeout(initSlider, 1000);
       return;
     }
 
@@ -84,9 +86,12 @@
   }
 
   function showNextImage() {
-    // Скрываем все изображения
+    // Скрываем все изображения и останавливаем видео
     images.forEach(img => {
-      if (img.element) img.element.classList.remove('visible');
+      img.element.classList.remove('visible');
+      if (img.element.tagName === 'VIDEO') {
+        img.element.pause();
+      }
     });
 
     // Через небольшую задержку, чтобы анимация скрытия проигралась
@@ -94,8 +99,18 @@
       const current = images[currentIndex];
       if (!current || !current.element) return;
 
-      // Показываем текущее изображение
+      // Показываем текущее изображение или запускаем видео
       current.element.classList.add('visible');
+
+      if (current.element.tagName === 'VIDEO') {
+        current.element.currentTime = 0;
+        const playPromise = current.element.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.warn("Автовоспроизведение видео заблокировано", error);
+          });
+        }
+      }
 
       currentIndex = (currentIndex + 1) % images.length;
 
