@@ -37,6 +37,7 @@
 <body>
 
   <!-- Картинки -->
+  <video id="slide2" class="slide11" muted loop><source src="video5289603205456496170.mp4" type="video/mp4"></video>
   <img id="imageSlide1" class="slide" src="image.png" alt="Картинка 1">
   <img id="imageSlide2" class="slide" src="1m.jpg" alt="Картинка 2">
   <img id="imageSlide3" class="slide" src="1m1.jpg" alt="Картинка 3">
@@ -55,6 +56,7 @@
 
   function initSlider() {
     images = [
+      { element: document.getElementById('imageSlide11'), duration: 9000 },
       { element: document.getElementById('imageSlide1'), duration: 9000 },
       { element: document.getElementById('imageSlide2'), duration: 6000 },
       { element: document.getElementById('imageSlide3'), duration: 6000 },
