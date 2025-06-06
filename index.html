@@ -38,11 +38,6 @@
 <body>
 
 
-
-
-  <!-- Картинки -->
-  <img id="imageSlide1" class="slide" src="image.png" alt="Картинка 1">
-  
   <!-- Видео -->
   <video id="videoSlide" class="slide" muted loop preload="auto">
     <source src="video5289603205456496170.mp4" type="video/mp4">
@@ -50,6 +45,7 @@
   </video>
   
   <!-- Картинки -->
+  <img id="imageSlide1" class="slide" src="image.png" alt="Картинка 1">
   <img id="imageSlide5" class="slide" src="ff.png" alt="Картинка 5">
   <img id="imageSlide6" class="slide" src="vacanc.png" alt="Картинка 6">
   <img id="imageSlide7" class="slide" src="ddcar1.PNG" alt="Картинка 7">
@@ -63,11 +59,10 @@
 
   function initSlider() {
     images = [
-      // Первым элементом — видео
-      { element: document.getElementById('videoSlide'), duration: 40000 }, // например, 12 секунд
-
-      // Затем картинки
+      // Картинки
       { element: document.getElementById('imageSlide1'), duration: 9000 },
+      // Видео
+      { element: document.getElementById('videoSlide'), duration: 40000 },
       { element: document.getElementById('imageSlide5'), duration: 7000 },
       { element: document.getElementById('imageSlide6'), duration: 15000 },
       { element: document.getElementById('imageSlide7'), duration: 6000 },
