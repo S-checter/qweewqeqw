@@ -1,0 +1,11 @@
+!
+! Title: Да ХЗ
+! Description: Просто тестируем свой список
+! Version: 0.0.0.0.0.0.0.0.1
+! Homepage: 
+! Last 
+!
+! Compiled by @adguard/hostlist-compiler v2.1.0
+!
+
+0.0.0.0 pornhub.com
