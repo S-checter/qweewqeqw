@@ -8,5 +8,8 @@
 ! Compiled by @adguard/hostlist-compiler v2.1.0
 !
 
-pornhub.com
-rt.pornhub.org
+s.admulti.com
+gag.admulti.com
+counter.yadro.ru
+gs.symcd.com
+gag.admulti.com
