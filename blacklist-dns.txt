@@ -32,3 +32,4 @@
 ||octoclick.com^
 ||rtb.com^
 ||propellerads.com^
+||ipmi.yandex.net^
