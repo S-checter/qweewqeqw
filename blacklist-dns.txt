@@ -8,9 +8,13 @@
 ! Compiled by @adguard/hostlist-compiler v2.1.0
 !
 
-s.admulti.com
-gag.admulti.com
-counter.yadro.ru
-gs.symcd.com
-gag.admulti.com
-
+0.0.0.0 s.admulti.com
+0.0.0.0 gag.admulti.com
+0.0.0.0 counter.yadro.ru
+0.0.0.0 gs.symcd.com
+0.0.0.0 gag.admulti.com
+0.0.0.0 yandex.ru/ads
+0.0.0.0 awaps.yandex.ru
+0.0.0.0 extmaps.yandex.net
+0.0.0.0 yandex.ru/ads
+0.0.0.0 redirect.appmetrica.yandex.com
