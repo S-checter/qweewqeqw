@@ -33,3 +33,4 @@
 ||rtb.com^
 ||propellerads.com^
 ||ipmi.yandex.net^
+||yndx.net^
