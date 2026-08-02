@@ -15,5 +15,4 @@
 ||awaps.yandex.ru^
 ||extmaps.yandex.net^
 ||redirect.appmetrica.yandex.com^
-||yandex.ru/an/count/^
 ||static.dzeninfra.ru^
