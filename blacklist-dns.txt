@@ -17,3 +17,18 @@
 ||redirect.appmetrica.yandex.com^
 ||static.dzeninfra.ru^
 ||yandex.ru^
+
+! --- Рекламные домены приложения и сайта Zona ---
+||zona.pub^
+||zonasearch.ru^
+||ztracker.ru^
+||zonline.xyz^
+
+! --- Сторонние тизерные и баннерные сети, крутящиеся в Zona ---
+||adstat.com^
+||marketgid.com^
+||mgid.com^
+||lentainform.com^
+||octoclick.com^
+||rtb.com^
+||propellerads.com^
