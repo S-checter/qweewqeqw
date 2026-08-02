@@ -18,3 +18,4 @@
 0.0.0.0 extmaps.yandex.net
 0.0.0.0 yandex.ru/ads
 0.0.0.0 redirect.appmetrica.yandex.com
+0.0.0.0 https://yandex.ru/an/count/
