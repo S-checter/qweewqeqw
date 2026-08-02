@@ -16,3 +16,4 @@
 ||extmaps.yandex.net^
 ||redirect.appmetrica.yandex.com^
 ||static.dzeninfra.ru^
+||yandex.ru^
