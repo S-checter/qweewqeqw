@@ -18,6 +18,7 @@
 ||static.dzeninfra.ru^
 !||yandex.ru^
 0.0.0.0 megabrowsers.com
+0.0.0.0 chrome.megabrowsers.com
 
 ! --- Рекламные домены приложения и сайта Zona ---
 ||zona.pub^
