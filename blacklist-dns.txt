@@ -17,7 +17,7 @@
 ||redirect.appmetrica.yandex.com^
 ||static.dzeninfra.ru^
 !||yandex.ru^
-||megabrowsers.com^
+0.0.0.0 megabrowsers.com
 
 ! --- Рекламные домены приложения и сайта Zona ---
 ||zona.pub^
